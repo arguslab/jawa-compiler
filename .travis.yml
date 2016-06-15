@@ -1,0 +1,25 @@
+language: scala
+scala:
+- 2.11.8
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - master
+script:
+- sbt clean coverage test && sbt coverageReport && sbt coverageAggregate
+after_success:
+- sbt codacyCoverage
+sudo: false
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+before_cache:
+- rm -rf $HOME/.ivy2/cache/scala_*/sbt_*/com.github.gseitz
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+notifications:
+  email:
+  - fgwei521@gmail.com
+env:
+  global:
+    secure: SHknPbwZGw+TsOAT5ebCR6GXo40Q2qIgxgr3Q6HQvVMcV9ENT7vFVRAGDpho/x/R+iYH7dor5PthqIaI0TRn3vXdHnHsrVp/zqODtSZkxDIyvPoX1OiAXq/b5CJbDEBReX8nszgrBVyK1HaCtJpkJor6mU6ZSykITZH+POZk1dvDyou4HRA4NXGt7zWcnRgIRL9JW7qBOaGbmcpvs8nrM5rIMFe0ttgjUNBN6jGlEbo5jAcUwTVoTML5P3MkQi646CgM+bJm+VMdVNIo7nki5A7Y7fsRAxhJhqYii+6x+7+p1jTAJSyw7972b85BUMnQyV193F89IVZX1vnGeC6mqU72+BPZf2e4SnKcaqmmQH/M2Ww6JAaSt5GW2VFvj8Q7KjCJP9OEFm5Uy3pxn724qH3irhXRLxuxkLyu3HZVR02Y+kNWQZyA1sg3C+A3CDv0RPHy8+9A1J5ud4NGB8UbI3/0wxeOZgTxbTfgylFn6pEtWpf8sLnlQC7PjhzPonwbnGOVKOXPvazBgsEBbk2Gmsd4IB+g2HMigA8rwGRoa8XWqGZ96gghUiO2bvBzeGPfW5IsnQP7PjiWmIpXENseP2/rVij0razvKDhH0j4hXJvtVTAt+GTi1FGdsyCE58Kod93HpVqPQA0yXe2oZXunhT2mKXui8rMoNBYlvEWIIuc=
