@@ -22,6 +22,8 @@ resolvers += Resolver.bintrayRepo("arguslab", "maven")
 libraryDependencies += "org.arguslab" %% "jawa-compiler" % "0.0.1"
 ```
 
+> If you use Maven or Gradle, you should translate it to corresponding format.
+
 ## Developing Argus-SAF
 
 In order to take part in Argus-SAF development, you need to:
