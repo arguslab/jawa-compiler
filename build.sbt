@@ -5,8 +5,6 @@ organization := "ArgusLab"
 scalaVersion := "2.11.8"
 sbtVersion := "0.13.9"
 
-crossPaths := false
-
 licenses := ("Eclipse-1.0" -> url("http://www.opensource.org/licenses/eclipse-1.0.php")) :: Nil // this is required! otherwise Bintray will reject the code
 homepage := Some(url("https://github.com/arguslab/jawa-compiler"))
 
