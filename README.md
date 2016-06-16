@@ -11,8 +11,7 @@ Depend on jawa-compiler by editing
 `build.sbt`:
 
 ```
-resolvers += Resolver.bintrayRepo("arguslab", "maven")
-libraryDependencies += "org.arguslab" %% "jawa-compiler" % "0.0.1"
+libraryDependencies += "com.github.arguslab" %% "jawa-compiler" % "0.0.2"
 ```
 
 > If you use Maven or Gradle, you should translate it to corresponding format.
