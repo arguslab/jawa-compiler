@@ -24,9 +24,9 @@ libraryDependencies += "org.arguslab" %% "jawa-compiler" % "0.0.1"
 
 > If you use Maven or Gradle, you should translate it to corresponding format.
 
-## Developing Argus-SAF
+## Developing jawa-compiler
 
-In order to take part in Argus-SAF development, you need to:
+In order to take part in jawa-compiler development, you need to:
 
 1. Install the following software:
     - IntelliJ IDEA 14 or higher with compatible version of Scala plugin
