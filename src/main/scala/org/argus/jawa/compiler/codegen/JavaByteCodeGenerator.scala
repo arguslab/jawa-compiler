@@ -18,6 +18,7 @@ import java.io.File
 import java.io.DataOutputStream
 import java.io.FileOutputStream
 
+import org.argus.jawa.compiler.lexer.Tokens._
 import org.argus.jawa.core.{AccessFlag, JavaKnowledge, JawaPackage, JawaType}
 import org.objectweb.asm.util.TraceClassVisitor
 
@@ -399,29 +400,17 @@ class JavaByteCodeGenerator {
     lhs match {
       case ie: IndexingExpression =>
         visitArrayAccess(mv, ie)
-        val tmp = JawaType.generateType(this.locals(ie.base).typ.baseTyp, this.locals(ie.base).typ.dimensions - ie.dimentions)
-        tmp match{
-          case p if p.isPrimitive => lhsTyp = Some(p)
-          case _ =>
-        }
+        val p = JawaType.generateType(this.locals(ie.base).typ.baseTyp, this.locals(ie.base).typ.dimensions - ie.dimentions)
+        lhsTyp = Some(p)
       case ae: AccessExpression =>
         visitFieldAccess(mv, ae)
-        typOpt.get match {
-          case p if p.isPrimitive => lhsTyp = Some(p)
-          case _ =>
-        }
+        lhsTyp = Some(typOpt.get)
       case ne: NameExpression =>
         ne.varSymbol match {
           case Left(v) =>
-            this.locals(v.varName).typ match{
-              case p if p.isPrimitive => lhsTyp = Some(p)
-              case _ =>
-            }
+            lhsTyp = Some(this.locals(v.varName).typ)
           case Right(f) =>
-            typOpt.get match {
-              case p if p.isPrimitive => lhsTyp = Some(p)
-              case _ =>
-            }
+            lhsTyp = Some(typOpt.get)
         }
       case _ =>
     }
@@ -506,13 +495,13 @@ class JavaByteCodeGenerator {
       }
       handleTypeImplicitConvert(mv, lhsTyp, rhsTyp)
     case te: TupleExpression =>
-      visitTupleExpression(mv, te)
+      visitTupleExpression(mv, lhsTyp, te)
     case ce: CastExpression =>
       visitCastExpression(mv, ce, kind)
     case ne: NewExpression =>
       visitNewExpression(mv, ne)
     case le: LiteralExpression =>
-      visitLiteralExpression(mv, le, kind)
+      visitLiteralExpression(mv, le)
     case ue: UnaryExpression =>
       visitUnaryExpression(mv, ue)
       var rhsTyp: Option[JawaType] = None
@@ -638,7 +627,7 @@ class JavaByteCodeGenerator {
     }
   }
   
-  private def visitTupleExpression(mv: MethodVisitor, te: TupleExpression): Unit = {
+  private def visitTupleExpression(mv: MethodVisitor, lhsTyp: Option[JawaType], te: TupleExpression): Unit = {
     val integers = te.integers
     val size = integers.size
     for(i <- 0 until size){
@@ -646,7 +635,10 @@ class JavaByteCodeGenerator {
       mv.visitInsn(Opcodes.DUP)
       generateIntConst(mv, i)
       generateIntConst(mv, integer)
-      mv.visitInsn(Opcodes.IASTORE)
+      lhsTyp.get match {
+        case typ if typ.baseTyp == "char" => mv.visitInsn(Opcodes.CASTORE)
+        case _ => mv.visitInsn(Opcodes.IASTORE)
+      }
     }
   }
   
@@ -766,18 +758,26 @@ class JavaByteCodeGenerator {
     case _ =>   println("visitUnaryExpression problem: " + ue)
   }
   
-  private def visitLiteralExpression(mv: MethodVisitor, le: LiteralExpression, kind: String): Unit = kind match {
-    case "int" => // I
-      generateIntConst(mv, le.getInt)
-    case "long" => // L
-      generateLongConst(mv, le.getLong)
-    case "float" => // F
-      generateFloatConst(mv, le.getFloat)
-    case "double" =>
-      generateDoubleConst(mv, le.getDouble)
-    case "object" => // String
-      visitStringLiteral(mv, le.getString)
-    case _ => println("visitLiteralExpression problem: " + kind + " " + le)
+  private def visitLiteralExpression(mv: MethodVisitor, le: LiteralExpression): Unit = {
+    val lit = le.constant.text
+    le.constant.tokenType match {
+      case STRING_LITERAL | CHARACTER_LITERAL =>
+        visitStringLiteral(mv, le.getString)
+      case FLOATING_POINT_LITERAL =>
+        lit match {
+          case x if x.endsWith("f") | x.endsWith("F") => generateFloatConst(mv, le.getFloat)
+          case x if x.endsWith("d") | x.endsWith("D") => generateDoubleConst(mv, le.getDouble)
+          case _ => println("visitLiteralExpression - FLOATING_POINT_LITERAL - problem: " + le.getString + " " + le)
+        }
+      case INTEGER_LITERAL =>
+        lit match {
+          case x if x.endsWith("i") | x.endsWith("I") => generateIntConst(mv, le.getInt)
+          case x if x.endsWith("l") | x.endsWith("L") => generateLongConst(mv, le.getLong)
+          case _ => println("visitLiteralExpression - INTEGER_LITERAL - problem: " + le.getString + " " + le)
+        }
+      case _ =>
+        println("visitLiteralExpression problem: " + le.getString + " " + le)
+    }
   }
   
   private def visitNewExpression(mv: MethodVisitor, ne: NewExpression): Unit = {
@@ -786,15 +786,15 @@ class JavaByteCodeGenerator {
         varName =>
           visitVarLoad(mv, varName)
       }
-      ne.typ match {
-        case pt if pt.jawaName == "byte" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BYTE)
-        case pt if pt.jawaName == "short" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_SHORT)
-        case pt if pt.jawaName == "int" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_INT)
-        case pt if pt.jawaName == "long" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_LONG)
-        case pt if pt.jawaName == "float" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_FLOAT)
-        case pt if pt.jawaName == "double" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_DOUBLE)
-        case pt if pt.jawaName == "boolean" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BOOLEAN)
-        case pt if pt.jawaName == "char" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_CHAR)
+      ne.typ.baseType match {
+        case pt if pt.name == "byte" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BYTE)
+        case pt if pt.name == "short" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_SHORT)
+        case pt if pt.name == "int" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_INT)
+        case pt if pt.name == "long" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_LONG)
+        case pt if pt.name == "float" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_FLOAT)
+        case pt if pt.name == "double" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_DOUBLE)
+        case pt if pt.name == "boolean" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BOOLEAN)
+        case pt if pt.name == "char" => mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_CHAR)
         case ot => mv.visitTypeInsn(Opcodes.ANEWARRAY, getClassName(ne.typ.baseTyp))
       }
     } else {
