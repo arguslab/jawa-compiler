@@ -21,9 +21,9 @@ bintrayRepository := "maven"
 bintrayPackage := "jawa-compiler"
 
 pomExtra := <scm>
-  <url>https://github.com/arguslab/jawa-compiler</url>
-  <connection>scm:git:https://github.com/arguslab/jawa-compiler.git</connection>
-</scm>
+    <url>https://github.com/arguslab/jawa-compiler</url>
+    <connection>scm:git:https://github.com/arguslab/jawa-compiler.git</connection>
+  </scm>
   <developers>
     <developer>
       <id>fgwei</id>

@@ -51,4 +51,4 @@ the directory where Scala plugin repository is and then import it as SBT project
 
 To contribute to the jawa-compiler, please send us a [pull request](https://help.github.com/articles/using-pull-requests/#fork--pull) from your fork of this repository!
 
-For more information on building and developing Amandroid, please also check out our [guidelines for contributing](CONTRIBUTING.md). People who provided excellent ideas are listed in [contributor](CONTRIBUTOR.md).
+For more information on building and developing jawa-compiler, please also check out our [guidelines for contributing](CONTRIBUTING.md). People who provided excellent ideas are listed in [contributor](CONTRIBUTOR.md).
