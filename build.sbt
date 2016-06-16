@@ -34,7 +34,7 @@ pomExtra := <scm>
 
 import com.typesafe.sbt.pgp.PgpKeys._
 
-lazy val publishSnapshot = taskKey[Unit]("Publish Snapshot - Custom Task")
+lazy val publishSnapshot = taskKey[Unit]("Publish Snapshot -- Custom Task")
 publishSnapshot := {
   println("Publishing Snapshot ...")
   val extracted = Project.extract(state.value)
