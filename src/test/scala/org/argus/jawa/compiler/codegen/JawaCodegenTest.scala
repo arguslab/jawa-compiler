@@ -155,41 +155,9 @@ class JawaCodegenTest extends FlatSpec with ShouldMatchers {
     val jf = new FgSourceFile(new PlainFile(new File("src/test/resources/monitor/Monitor1.pilar")))
     genCode(jf)
   }
-//
-////  "Generate code" should "not throw an exception on Other" in {
-////    val jf = new FgSourceFile(new PlainFile(new File("src/test/resources/other/ArrayAccess1.pilar")))
-////    genCode(jf)
-////  }
 
   val reporter = new DefaultReporter
   private def parser(s: Either[String, SourceFile]) = new JawaParser(JawaLexer.tokenise(s, reporter).toArray, reporter)
-//  private def parseLocation(s: String) = {
-//    val loc = parser(Left(s)).location
-//    if(reporter.hasErrors) throw new RuntimeException(reporter.problems.toString())
-//    loc
-//  }
-
-//  private def parseCompilationUnit(s: SourceFile) = {
-//    val cu = parser(Right(s)).compilationUnit(true)
-//    val allAsts = cu.getAllChildrenInclude
-//    allAsts.foreach {
-//      ast =>
-//        if(!ast.isInstanceOf[CompilationUnit]) require(ast.enclosingTopLevelClass != null, ast + " should have top level class.")
-//    }
-//    if(reporter.hasErrors) throw new RuntimeException(reporter.problems.toString())
-//    cu
-//  }
-//
-//  private def parseCompilationUnit(s: String) = {
-//    val cu = parser(Left(s)).compilationUnit(true)
-//    val allAsts = cu.getAllChildrenInclude
-//    allAsts.foreach {
-//      ast =>
-//        if(!ast.isInstanceOf[CompilationUnit]) require(ast.enclosingTopLevelClass != null, ast + " should have top level class.")
-//    }
-//    if(reporter.hasErrors) throw new RuntimeException(reporter.problems.toString())
-//    cu
-//  }
 
   private def genCode(s: SourceFile) = {
     val newcode = s.code
