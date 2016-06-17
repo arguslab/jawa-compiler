@@ -11,8 +11,7 @@ Depend on jawa-compiler by editing
 `build.sbt`:
 
 ```
-resolvers += Resolver.bintrayRepo("arguslab", "maven")
-libraryDependencies += "org.arguslab" %% "jawa-compiler" % "0.0.1"
+libraryDependencies += "com.github.arguslab" %% "jawa-compiler" % "0.0.2"
 ```
 
 > If you use Maven or Gradle, you should translate it to corresponding format.
@@ -52,4 +51,4 @@ the directory where Scala plugin repository is and then import it as SBT project
 
 To contribute to the jawa-compiler, please send us a [pull request](https://help.github.com/articles/using-pull-requests/#fork--pull) from your fork of this repository!
 
-For more information on building and developing Amandroid, please also check out our [guidelines for contributing](CONTRIBUTING.md). People who provided excellent ideas are listed in [contributor](CONTRIBUTOR.md).
+For more information on building and developing jawa-compiler, please also check out our [guidelines for contributing](CONTRIBUTING.md). People who provided excellent ideas are listed in [contributor](CONTRIBUTOR.md).
