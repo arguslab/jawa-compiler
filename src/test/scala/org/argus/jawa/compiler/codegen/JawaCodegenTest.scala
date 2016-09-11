@@ -156,6 +156,11 @@ class JawaCodegenTest extends FlatSpec with ShouldMatchers {
     genCode(jf)
   }
 
+  "Generate code" should "not throw an exception on IJawa" in {
+    val jf = new FgSourceFile(new PlainFile(new File("src/test/resources/interface/IJawa.pilar")))
+    printCode(jf)
+  }
+
   val reporter = new DefaultReporter
   private def parser(s: Either[String, SourceFile]) = new JawaParser(JawaLexer.tokenise(s, reporter).toArray, reporter)
 
@@ -178,6 +183,18 @@ class JawaCodegenTest extends FlatSpec with ShouldMatchers {
           case ilv: java.lang.VerifyError =>
             throw new RuntimeException(ilv.getMessage)
         }
+    }
+  }
+
+  private def printCode(s: SourceFile) = {
+    val newcode = s.code
+    val cu = parser(Left(newcode)).compilationUnit(true)
+    val css = new JavaByteCodeGenerator().generate(cu)
+    val ccl: CustomClassLoader = new CustomClassLoader()
+    val pw = new PrintWriter(System.out)
+    css foreach {
+      case (typ, bytecodes) =>
+        JavaByteCodeGenerator.outputByteCodes(pw, bytecodes)
     }
   }
 }
