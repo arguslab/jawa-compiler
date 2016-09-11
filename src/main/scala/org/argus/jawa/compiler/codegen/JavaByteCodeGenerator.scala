@@ -51,7 +51,7 @@ class JavaByteCodeGenerator {
   def generate(cu: JawaCompilationUnit): IMap[JawaType, Array[Byte]] = {
     cu.topDecls foreach {
       cid =>
-        visitClass(cid, Opcodes.V1_6)
+        visitClass(cid, Opcodes.V1_8)
     }
     getClasses
   }
@@ -70,7 +70,7 @@ class JavaByteCodeGenerator {
       case None => if(cid.typ.name != JavaKnowledge.JAVA_TOPLEVEL_OBJECT) getClassName(JavaKnowledge.JAVA_TOPLEVEL_OBJECT) else null
     }
     val interfaceNames: IList[String] = cid.interfaces map(i => getClassName(i.name))
-    if(superName != null || interfaceNames.nonEmpty) mod = mod | Opcodes.ACC_SUPER
+    if(!AccessFlag.isInterface(af) && (superName != null || interfaceNames.nonEmpty)) mod = mod | Opcodes.ACC_SUPER
     cw.visit(javaVersion, mod, getClassName(cid.typ.name), null, superName, interfaceNames.toArray)
     cw.visitSource(null, null)
     cid.fields foreach {
