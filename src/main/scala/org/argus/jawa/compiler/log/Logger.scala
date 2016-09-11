@@ -29,7 +29,6 @@ abstract class AbstractLogger extends Logger {
   final def log(event: LogEvent) {
     event match {
       case s: Success => debug(s.msg)
-      case l: Log => log(l.level, l.msg)
       case t: Trace => trace(t.exception)
       case setL: SetLevel => setLevel(setL.newLevel)
       case setT: SetTrace => setTrace(setT.level)
@@ -51,7 +50,10 @@ object Logger {
     def logAll(events: Seq[LogEvent]) {}
     def trace(t: Throwable) {}
     def success(message: => String) {}
-    override def log(level: Level.Value, message: String) {}
+    override def debug(msg: String): Unit = {}
+    override def warn(msg: String): Unit = {}
+    override def info(msg: String): Unit = {}
+    override def error(msg: String): Unit = {}
   }
 
   def problem(cat: String, pos: Position, msg: String, sev: Severity.Value): Problem =
@@ -66,12 +68,11 @@ object Logger {
 /** This is intended to be the simplest logging interface for use by code that wants to log.
 * It does not include configuring the logger. */
 trait Logger {
-  def debug(msg: String): Unit = log(Level.Debug, msg)
-  def warn(msg: String): Unit = log(Level.Warn, msg)
-  def info(msg: String): Unit = log(Level.Info, msg)
-  def error(msg: String): Unit = log(Level.Error, msg)
+  def debug(msg: String): Unit
+  def warn(msg: String): Unit
+  def info(msg: String): Unit
+  def error(msg: String): Unit
   def trace(t: Throwable): Unit
-  def log(level: Level.Value, msg: String): Unit = log(level, msg)
 }
 
 /** An enumeration defining the levels available for logging.  A level includes all of the levels

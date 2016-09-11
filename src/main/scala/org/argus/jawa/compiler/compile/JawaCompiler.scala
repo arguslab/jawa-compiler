@@ -26,7 +26,7 @@ import org.sireum.util._
 final class JawaCompiler () {
   val reporter = new DefaultReporter
   private def parser(s: Either[String, FgSourceFile]) = new JawaParser(JawaLexer.tokenise(s, reporter).toArray, reporter)
-  def compile(sources: IList[File], outputDirs: Seq[File], reporter: Reporter, log: Logger, progress: CompileProgress): Unit = {
+  def compile(sources: Array[File], outputDirs: Array[File], reporter: Reporter, log: Logger, progress: CompileProgress): Unit = {
     sources foreach{
       source =>
         require(source.getPath.endsWith("pilar") || source.getPath.endsWith("plr"), "Wrong file extension to compile " + source)

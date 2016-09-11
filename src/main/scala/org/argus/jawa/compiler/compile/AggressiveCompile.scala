@@ -43,7 +43,7 @@ class AggressiveCompile(cacheFile: File) {
       {
         val sources = jawaSrcs
         timed("Jawa compilation", log) {
-          compiler.compile(sources, outputDirs, reporter, log, progress)
+          compiler.compile(sources.toArray, outputDirs.toArray, reporter, log, progress)
         }
       }
     def compileJava() =

@@ -11,7 +11,7 @@ Depend on jawa-compiler by editing
 `build.sbt`:
 
 ```
-libraryDependencies += "com.github.arguslab" %% "jawa-compiler" % "1.0.1"
+libraryDependencies += "com.github.arguslab" %% "jawa-compiler" % "1.0.2"
 ```
 
 > If you use Maven or Gradle, you should translate it to corresponding format.
