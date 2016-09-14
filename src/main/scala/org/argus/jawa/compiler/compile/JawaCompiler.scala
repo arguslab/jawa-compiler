@@ -23,7 +23,7 @@ import org.sireum.util._
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-final class JawaCompiler () {
+final class JawaCompiler(javaVersionStr: String) {
   val reporter = new DefaultReporter
   private def parser(s: Either[String, FgSourceFile]) = new JawaParser(JawaLexer.tokenise(s, reporter).toArray, reporter)
   def compile(sources: Array[File], outputDirs: Array[File], reporter: Reporter, log: Logger, progress: CompileProgress): Unit = {
@@ -32,7 +32,7 @@ final class JawaCompiler () {
         require(source.getPath.endsWith("pilar") || source.getPath.endsWith("plr"), "Wrong file extension to compile " + source)
         val file = new FgSourceFile(new PlainFile(source))
         val cu = parser(Right(file)).compilationUnit(true)
-        val css = new JavaByteCodeGenerator().generate(cu)
+        val css = new JavaByteCodeGenerator(javaVersionStr).generate(cu)
         css foreach {
           case (typ, bcs) =>
             outputDirs.foreach {

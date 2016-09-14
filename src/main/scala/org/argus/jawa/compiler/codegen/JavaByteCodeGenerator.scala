@@ -43,7 +43,19 @@ object JavaByteCodeGenerator {
   }
 }
 
-class JavaByteCodeGenerator {
+class JavaByteCodeGenerator(javaVersion: Int) {
+  def this(javaVersionStr: String) = this(javaVersionStr match {
+    case "1.1" => Opcodes.V1_1
+    case "1.2" => Opcodes.V1_2
+    case "1.3" => Opcodes.V1_3
+    case "1.4" => Opcodes.V1_4
+    case "1.5" => Opcodes.V1_5
+    case "1.6" => Opcodes.V1_6
+    case "1.7" => Opcodes.V1_7
+    case "1.8" => Opcodes.V1_8
+    case _ => Opcodes.V1_8 // by default just use the newest version to generate code
+  })
+
   private val classes: MMap[JawaType, Array[Byte]] = mmapEmpty
   
   def getClasses: IMap[JawaType, Array[Byte]] = classes.toMap
@@ -51,7 +63,7 @@ class JavaByteCodeGenerator {
   def generate(cu: JawaCompilationUnit): IMap[JawaType, Array[Byte]] = {
     cu.topDecls foreach {
       cid =>
-        visitClass(cid, Opcodes.V1_8)
+        visitClass(cid, javaVersion)
     }
     getClasses
   }

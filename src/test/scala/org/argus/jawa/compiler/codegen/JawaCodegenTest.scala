@@ -167,7 +167,7 @@ class JawaCodegenTest extends FlatSpec with ShouldMatchers {
   private def genCode(s: SourceFile) = {
     val newcode = s.code
     val cu = parser(Left(newcode)).compilationUnit(true)
-    val css = new JavaByteCodeGenerator().generate(cu)
+    val css = new JavaByteCodeGenerator("1.8").generate(cu)
     val ccl: CustomClassLoader = new CustomClassLoader()
     val pw = new PrintWriter(System.out)
     css foreach {
@@ -189,7 +189,7 @@ class JawaCodegenTest extends FlatSpec with ShouldMatchers {
   private def printCode(s: SourceFile) = {
     val newcode = s.code
     val cu = parser(Left(newcode)).compilationUnit(true)
-    val css = new JavaByteCodeGenerator().generate(cu)
+    val css = new JavaByteCodeGenerator("1.8").generate(cu)
     val ccl: CustomClassLoader = new CustomClassLoader()
     val pw = new PrintWriter(System.out)
     css foreach {
