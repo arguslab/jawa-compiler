@@ -122,7 +122,7 @@ class JavaByteCodeGenerator(javaVersion: Int) {
     var i = 0
     md.thisParam.foreach{
       t =>
-        locals(t.name) = LocalIndex(t.name, t.typ.typ, i)
+        locals(t.name) = LocalIndex("this", t.typ.typ, i)
         i += 1
     }
     md.paramlist.foreach{
