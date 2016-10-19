@@ -29,7 +29,7 @@ final class JawaCompiler(javaVersionStr: String) {
   def compile(sources: Array[File], outputDirs: Array[File], reporter: Reporter, log: Logger, progress: CompileProgress): Unit = {
     sources foreach{
       source =>
-        require(source.getPath.endsWith("pilar") || source.getPath.endsWith("plr"), "Wrong file extension to compile " + source)
+        require(source.getPath.endsWith("jawa"), "Wrong file extension to compile " + source)
         val file = new FgSourceFile(new PlainFile(source))
         val cu = parser(Right(file)).compilationUnit(true)
         val css = new JavaByteCodeGenerator(javaVersionStr).generate(cu)
@@ -67,7 +67,7 @@ object JawaCompiler
       }
     }
   }
-  private def isSourceName(name: String): Boolean = name.endsWith(".pilar") || name.endsWith(".java")
+  private def isSourceName(name: String): Boolean = name.endsWith(".jawa") || name.endsWith(".java")
 }
 
 private[this] object IgnoreProgress extends CompileProgress {
