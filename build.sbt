@@ -11,7 +11,7 @@ homepage := Some(url("https://github.com/arguslab/jawa-compiler"))
 libraryDependencies += "org.scalactic" %% "scalactic" % "2.2.6"
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
-libraryDependencies += "com.github.arguslab" %% "jawa-core" % "1.1.4"
+libraryDependencies += "com.github.arguslab" %% "jawa-core" % "1.1.5"
 
 
 // Bintray
@@ -28,7 +28,7 @@ pomExtra := <scm>
     <developer>
       <id>fgwei</id>
       <name>Fengguo Wei</name>
-      <url>http://www.arguslab.org/~fgwei/</url>
+      <url>http://fgwei.arguslab.org</url>
     </developer>
   </developers>
 
