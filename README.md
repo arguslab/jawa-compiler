@@ -1,6 +1,7 @@
 # jawa-compiler: Interactive Compiler for JAWA.
 [![License](https://img.shields.io/badge/License-EPL%201.0-red.svg)](https://opensource.org/licenses/EPL-1.0) 
 [![Download](https://api.bintray.com/packages/arguslab/maven/jawa-compiler/images/download.svg)](https://bintray.com/arguslab/maven/jawa-compiler/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.arguslab/jawa-compiler_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.arguslab/jawa-compiler_2.11)
 [![Build Status](https://travis-ci.org/arguslab/jawa-compiler.svg?branch=master)](https://travis-ci.org/arguslab/jawa-compiler)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7feccdaca19847759f75bd044ddbee28)](https://www.codacy.com/app/fgwei521/jawa-compiler?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=arguslab/jawa-compiler&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7feccdaca19847759f75bd044ddbee28)](https://www.codacy.com/app/fgwei521/jawa-compiler?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=arguslab/jawa-compiler&amp;utm_campaign=Badge_Coverage)
